@@ -12,7 +12,3 @@ Thumbs.db
 node_modules/
 
 # Собранные файлы (допишите самостоятельно)
-webpack.config.js
-public/bundle.js
-public/bundle.js.map
-
