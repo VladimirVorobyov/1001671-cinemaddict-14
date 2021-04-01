@@ -4,7 +4,7 @@ import { createUserTemplate } from './view/user.js';
 import { createFilmsTemplate } from './view/films.js';
 import { createCardTemplate } from './view/card.js';
 import { createButtonTemplate } from './view/sow-more.js';
-import { createFilmsTopTemplate } from './view/top-rated.js';
+
 const FILMS_NUMBER = 5;
 const FILMS_TOP = 2;
 
@@ -31,6 +31,6 @@ render(filmsList, createButtonTemplate(), 'beforeend');
 for (let i = 0; i < FILMS_TOP; i++) {
   const topRated = document.querySelector('#top-rated');
   const mostCommented = document.querySelector('#most-commented');
-  render(topRated, createFilmsTopTemplate(), 'beforeend');
-  render(mostCommented, createFilmsTopTemplate(), 'beforeend');
+  render(topRated, createCardTemplate(), 'beforeend');
+  render(mostCommented, createCardTemplate(), 'beforeend');
 }
