@@ -4,6 +4,7 @@ import { createUserTemplate } from './view/user.js';
 import { createFilmsTemplate } from './view/films.js';
 import { createCardTemplate } from './view/card.js';
 import { createButtonTemplate } from './view/sow-more.js';
+import { createPopupTemplate } from './view/popup.js';
 
 const FILMS_NUMBER = 5;
 const FILMS_TOP = 2;
@@ -19,6 +20,8 @@ render(siteMainElement, createMenuTemplate(), 'beforeend');
 render(siteMainElement, createSortTemplate(), 'beforeend');
 render(siteMainElement, createFilmsTemplate(), 'beforeend');
 render(headerElement, createUserTemplate(), 'beforeend');
+render(siteMainElement, createPopupTemplate(), 'beforeend');
+
 
 for (let i = 0; i < FILMS_NUMBER; i++) {
   const filmsListContainer = document.querySelector('.films-list__container');
@@ -34,3 +37,10 @@ for (let i = 0; i < FILMS_TOP; i++) {
   render(topRated, createCardTemplate(), 'beforeend');
   render(mostCommented, createCardTemplate(), 'beforeend');
 }
+
+const closeBtn = siteMainElement.querySelector('.film-details__close-btn');
+const filmsDetails = siteMainElement.querySelector('.film-details');
+
+closeBtn.addEventListener('click', () => {
+  filmsDetails.style.display = 'none';
+});
