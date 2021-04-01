@@ -20,7 +20,7 @@ render(siteMainElement, createSortTemplate(), 'beforeend');
 render(siteMainElement, createFilmsTemplate(), 'beforeend');
 render(headerElement, createUserTemplate(), 'beforeend');
 
-for(let i = 0; i < FILMS_NUMBER; i++){
+for (let i = 0; i < FILMS_NUMBER; i++) {
   const filmsListContainer = document.querySelector('.films-list__container');
   render(filmsListContainer, createCardTemplate(), 'beforeend');
 }
@@ -28,7 +28,7 @@ for(let i = 0; i < FILMS_NUMBER; i++){
 const filmsList = document.querySelector('.films-list');
 render(filmsList, createButtonTemplate(), 'beforeend');
 
-for(let i = 0; i < FILMS_TOP; i++){
+for (let i = 0; i < FILMS_TOP; i++) {
   const topRated = document.querySelector('#top-rated');
   const mostCommented = document.querySelector('#most-commented');
   render(topRated, createFilmsTopTemplate(), 'beforeend');
