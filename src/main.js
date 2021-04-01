@@ -11,6 +11,7 @@ const FILMS_TOP = 2;
 
 const siteMainElement = document.querySelector('.main');
 const headerElement = document.querySelector('.header');
+const footerStatistics = document.querySelector('.footer__statistics');
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -21,7 +22,7 @@ render(siteMainElement, createSortTemplate(), 'beforeend');
 render(siteMainElement, createFilmsTemplate(), 'beforeend');
 render(headerElement, createUserTemplate(), 'beforeend');
 render(siteMainElement, createPopupTemplate(), 'beforeend');
-
+render(footerStatistics, '<p>130 291 movies inside</p>', 'beforeend');
 
 for (let i = 0; i < FILMS_NUMBER; i++) {
   const filmsListContainer = document.querySelector('.films-list__container');
