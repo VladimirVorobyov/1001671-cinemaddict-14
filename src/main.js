@@ -5,6 +5,7 @@ import { createFilmsTemplate } from './view/films.js';
 import { createCardTemplate } from './view/card.js';
 import { createButtonTemplate } from './view/sow-more.js';
 import { createPopupTemplate } from './view/popup.js';
+import { createNumberMovies } from './view/number-fims.js';
 
 const FILMS_NUMBER = 5;
 const FILMS_TOP = 2;
@@ -22,7 +23,7 @@ render(siteMainElement, createSortTemplate(), 'beforeend');
 render(siteMainElement, createFilmsTemplate(), 'beforeend');
 render(headerElement, createUserTemplate(), 'beforeend');
 render(siteMainElement, createPopupTemplate(), 'beforeend');
-render(footerStatistics, '<p>130 291 movies inside</p>', 'beforeend');
+render(footerStatistics, createNumberMovies(), 'beforeend');
 
 for (let i = 0; i < FILMS_NUMBER; i++) {
   const filmsListContainer = document.querySelector('.films-list__container');
