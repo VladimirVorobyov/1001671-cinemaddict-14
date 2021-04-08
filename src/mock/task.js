@@ -1,28 +1,12 @@
+import {getValues, getRandomRating, getRandom, createData} from '../util.js';
+
 const NUMBER_OFFERS = 5;
 const NUMBER_RATING = 10;
 const YEAR_START = 1900;
 const YEAR_END = 2021;
 const MAX_HOUR = 3;
 const MAX_MINUTES = 60;
-
-const getRandom = (min, max) => {
-
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-
-};
-
-const getRandomRating = (min, max) => {
-
-  return ((Math.random() * (max - min + 1)) + min).toFixed(1);
-
-};
-
-
-const getValues = (arr) => {
-
-  return arr[getRandom(0, arr.length - 1)];
-
-};
+const genres = ['Cartoon','Comedy','Drama','Western','Musical'];
 
 const createMovieTitle = () => {
   const movieTitles = ['The Shawshank Redemption', 'The Man Called Flintstone',
@@ -72,7 +56,6 @@ const createDescription = () => {
 };
 
 const createGenre = () => {
-  const genres = ['Cartoon','Comedy','Drama','Western','Musical'];
 
   return getValues(genres);
 
@@ -102,12 +85,6 @@ const createEmotion = () => {
 
 };
 
-const createData = () => {
-  const lateDate = new Date();
-  const dates = [lateDate,'2 days ago','Today'];
-  return getValues(dates);
-};
-
 const createAuthor = () => {
   const authors = ['Tim Macoveev', 'John Doe', 'Dan Duryea'];
 
@@ -127,22 +104,117 @@ const createMessage = () => {
 
 };
 
+const createAge = () => {
+  const ages = ['18+', '3+', '6+', '12+', '16+'];
+
+  return getValues(ages);
+
+};
+
+const createDirector = () => {
+  const directors = [
+    'Anthony Mann',
+    'Grea Mann',
+    'Offer Anna',
+    'Maria Lukas',
+    'Ganna Gunna',
+  ];
+
+  return getValues(directors);
+
+};
+
+const createReleaseDate = () => {
+  const maxNumberDay = 30;
+  const months = ['January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'];
+
+  return `${getRandom(0,maxNumberDay)} ${getValues(months)}`;
+
+};
+
+const createContry = () => {
+  const contry =['Russia','USA','Belarus'];
+
+  return getValues(contry);
+
+};
+
+const createArrayName = () => {
+  const descriptionList = ['Anne Wigton', 'Heinz Herald', 'Richard Weil', 'Erich von Stroheim', 'Mary Beth Hughes', 'Dan Duryea'];
+  const mySet = new Set();
+
+  for (let i = 0; i < NUMBER_OFFERS; i++) {
+
+    mySet.add(descriptionList[getRandom(0, descriptionList.length - 1)]);
+
+  }
+
+  const uniqArray = Array.from(mySet);
+
+  return uniqArray.join(',');
+
+};
+
+const createNumComment = () => {
+  const maxNumComment = 10;
+
+  return getRandom(0,maxNumComment);
+
+};
+
+const createNumGener = () => {
+  const maxNumGenre = 3;
+
+  return getRandom(0,maxNumGenre);
+
+};
+
+const createListGeneres = (main,num) => {
+  const mySet = new Set();
+  mySet.add(main);
+
+  for (let i = 0; i < num; i++) {
+
+    mySet.add(genres[getRandom(0, genres.length - 1)]);
+
+  }
+
+  const uniqArray = Array.from(mySet);
+
+  return uniqArray;
+
+};
+
 export const generateTask = () => {
+  const ageRelease = getRandom(YEAR_START, YEAR_END);
+  const numComment = createNumComment();
+  const mainGenre = createGenre();
+  const numberGeneres = createNumGener();
+  const comment = {
+    emotion: new Array(numComment).fill().map(createEmotion),
+    date: new Array(numComment).fill().map(createData),
+    author: new Array(numComment).fill().map(createAuthor),
+    message: new Array(numComment).fill().map(createMessage),
+  };
 
   return {
     movieTitle: createMovieTitle(),
     poster: createPoster(),
     description: createDescription(),
     rating: getRandomRating(0, NUMBER_RATING),
-    productionYear: getRandom(YEAR_START, YEAR_END),
-    genre: createGenre(),
+    productionYear: ageRelease,
+    genre: mainGenre,
+    listGeneres: createListGeneres(mainGenre,numberGeneres),
     time: createTime(),
-    comment: {
-      emotion: createEmotion(),
-      date: createData(),
-      author: createAuthor(),
-      message: createMessage(),
-    },
+    age: createAge(),
+    releaseDate: `${createReleaseDate()} ${ageRelease}`,
+    country: createContry(),
+    director: createDirector(),
+    writers: createArrayName(),
+    actors: createArrayName(),
+    numberComment: numComment,
+    comment: comment,
   };
 
 };
