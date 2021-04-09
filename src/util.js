@@ -26,3 +26,14 @@ export const createData = () => {
   return dayjs().add(daysGap, 'day').format('DD/MM/YYYY');
 
 };
+
+export const getRandomArray = (array) => {
+  const arrayList = [];
+  array.forEach((element) => {
+    if (Math.random() > 0.5) {
+      return;
+    }
+    arrayList.push(element);
+  });
+  return arrayList;
+};

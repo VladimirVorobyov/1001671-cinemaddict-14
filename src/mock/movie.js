@@ -1,4 +1,5 @@
-import {getValues, getRandomRating, getRandom, createData} from '../util.js';
+import {getValues, getRandomRating, getRandom, getRandomArray} from '../util.js';
+import comments from './comment.js';
 
 const NUMBER_OFFERS = 5;
 const NUMBER_RATING = 10;
@@ -73,37 +74,6 @@ const createTime = () => {
 
 };
 
-const createEmotion = () => {
-  const emotions = [
-    './images/emoji/angry.png',
-    './images/emoji/puke.png',
-    './images/emoji/sleeping.png',
-    './images/emoji/smile.png',
-  ];
-
-  return getValues(emotions);
-
-};
-
-const createAuthor = () => {
-  const authors = ['Tim Macoveev', 'John Doe', 'Dan Duryea'];
-
-  return getValues(authors);
-
-};
-
-const createMessage = () => {
-  const messages = [
-    'Interesting setting and a good cast',
-    'Booooooooooring',
-    'Very very old. Meh',
-    'Almost two hours? Seriously?',
-  ];
-
-  return getValues(messages);
-
-};
-
 const createAge = () => {
   const ages = ['18+', '3+', '6+', '12+', '16+'];
 
@@ -156,13 +126,6 @@ const createArrayName = () => {
 
 };
 
-const createNumComment = () => {
-  const maxNumComment = 10;
-
-  return getRandom(0,maxNumComment);
-
-};
-
 const createNumGener = () => {
   const maxNumGenre = 3;
 
@@ -186,17 +149,14 @@ const createListGeneres = (main,num) => {
 
 };
 
-export const generateTask = () => {
+const getComments = () => {
+  return getRandomArray(comments).map((comment) => comment.id);
+};
+
+export const generateMovie = () => {
   const ageRelease = getRandom(YEAR_START, YEAR_END);
-  const numComment = createNumComment();
   const mainGenre = createGenre();
   const numberGeneres = createNumGener();
-  const comment = {
-    emotion: new Array(numComment).fill().map(createEmotion),
-    date: new Array(numComment).fill().map(createData),
-    author: new Array(numComment).fill().map(createAuthor),
-    message: new Array(numComment).fill().map(createMessage),
-  };
 
   return {
     movieTitle: createMovieTitle(),
@@ -213,8 +173,7 @@ export const generateTask = () => {
     director: createDirector(),
     writers: createArrayName(),
     actors: createArrayName(),
-    numberComment: numComment,
-    comment: comment,
+    comments: getComments(),
   };
 
 };

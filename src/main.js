@@ -6,9 +6,12 @@ import { createCardTemplate } from './view/card.js';
 import { createButtonTemplate } from './view/sow-more.js';
 import { createPopupTemplate } from './view/popup.js';
 import { createNumberMovies } from './view/number-fims.js';
-import { generateTask } from './mock/task.js';
+import { generateMovie } from './mock/movie.js';
+import comments from './mock/comment.js';
 import { createComment } from './view/comment.js';
 import { createGenerePopup } from './view/genere.js';
+import { createFilterNavigation } from './view/filter.js';
+import filters from './mock/filter.js';
 
 const FILMS_NUMBER = 15;
 const FILMS_TOP = 2;
@@ -19,8 +22,7 @@ const siteMainElement = document.querySelector('.main');
 const headerElement = document.querySelector('.header');
 const footerStatistics = document.querySelector('.footer__statistics');
 
-
-const tasks = new Array(FILMS_NUMBER).fill().map(generateTask);
+const tasks = new Array(FILMS_NUMBER).fill().map(generateMovie);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -47,10 +49,14 @@ for (let i = 0; i < FILMS_TOP; i++) {
   render(mostCommented, createCardTemplate(tasks[i]), 'beforeend');
 }
 
-for (let i = 0; i < tasks[0].numberComment; i++) {
-  const filmDetailsCommentsList = document.querySelector('.film-details__comments-list');
-  render(filmDetailsCommentsList, createComment(tasks[0], i), 'beforeend');
-}
+const commentsForFilm = comments.filter((comment) => {
+  return tasks[0].comments.includes(comment.id);
+});
+const filmDetailsCommentsList = document.querySelector('.film-details__comments-list');
+commentsForFilm.forEach((comment) => {
+  render(filmDetailsCommentsList, createComment(comment), 'beforeend');
+});
+
 
 for (let i = 0; i < tasks[0].listGeneres.length; i++) {
   const filmDetailsGenery = document.querySelector('#genery');
@@ -77,6 +83,10 @@ if (tasks.length > TASK_COUNT_PER_STEP) {
       loadMoreButton.remove();
     }
   });
+}
+const mainNavigationItems = document.querySelector('.main-navigation__items');
+for (let i = 0; i < filters.desc.length; i++) {
+  render(mainNavigationItems, createFilterNavigation(filters.desc[i],filters.count[i]), 'beforeend');
 }
 
 

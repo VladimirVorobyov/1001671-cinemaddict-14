@@ -1,5 +1,5 @@
 export const createPopupTemplate = (task) => {
-  const {movieTitle, rating, releaseDate, time, poster, description, age, director,country, actors, writers, numberComment} = task;
+  const {movieTitle, rating, releaseDate, time, poster, description, age, director,country, actors, writers, comments} = task;
   return `<section class="film-details">
             <form class="film-details__inner" action="" method="get">
               <div class="film-details__top-container">
@@ -77,7 +77,7 @@ export const createPopupTemplate = (task) => {
 
               <div class="film-details__bottom-container">
                 <section class="film-details__comments-wrap">
-                  <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${numberComment}</span></h3>
+                  <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
 
                   <ul class="film-details__comments-list">
 
