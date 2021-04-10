@@ -11,7 +11,7 @@ import comments from './mock/comment.js';
 import { createComment } from './view/comment.js';
 import { createGenerePopup } from './view/genere.js';
 import { createFilterNavigation } from './view/filter.js';
-import filters from './mock/filter.js';
+import { createFilter } from './mock/filter.js';
 
 const FILMS_NUMBER = 15;
 const FILMS_TOP = 2;
@@ -85,8 +85,9 @@ if (tasks.length > TASK_COUNT_PER_STEP) {
   });
 }
 const mainNavigationItems = document.querySelector('.main-navigation__items');
-for (let i = 0; i < filters.desc.length; i++) {
-  render(mainNavigationItems, createFilterNavigation(filters.desc[i],filters.count[i]), 'beforeend');
+const filters = createFilter();
+for (let i = 0; i < filters.length; i++) {
+  render(mainNavigationItems, createFilterNavigation(filters[i]), 'beforeend');
 }
 
 
