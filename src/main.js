@@ -1,18 +1,18 @@
 import {render, RenderPosition} from './util.js';
-import MenuTemplate  from './view/main-navigation.js';
-import SortTemplate  from './view/main-sort.js';
-import  UserTemplate  from './view/user.js';
-import FilmsTemplate from './view/films.js';
+import MenuTemplateView  from './view/main-navigation.js';
+import SortTemplateView  from './view/main-sort.js';
+import  UserTemplateView  from './view/user.js';
+import FilmsTemplateView from './view/films.js';
 import CardView from './view/card.js';
-import ButtonTemplate  from './view/sow-more.js';
-import PopupTemplate  from './view/popup.js';
-import NumberMovies  from './view/number-fims.js';
+import ButtonTemplateView  from './view/sow-more.js';
+import PopupTemplateView  from './view/popup.js';
+import NumberMoviesView  from './view/number-fims.js';
 import { generateMovie } from './mock/movie.js';
 import comments from './mock/comment.js';
 import CommentView from './view/comment.js';
-import GenerePopup from './view/genere.js';
-import FilterNavigation from './view/filter.js';
-import NoFilmsTemplate from './view/no-films.js';
+import GenerePopupView from './view/genere.js';
+import FilterNavigationView from './view/filter.js';
+import NoFilmsTemplateView from './view/no-films.js';
 import { createFilter } from './mock/filter.js';
 
 const FILMS_NUMBER = 15;
@@ -25,7 +25,7 @@ const footerStatistics = document.querySelector('.footer__statistics');
 const tasks = new Array(FILMS_NUMBER).fill().map(generateMovie);
 
 const renderTask = (taskListElement, task) => {
-  const PopupComponent = new PopupTemplate(task);
+  const PopupComponent = new PopupTemplateView(task);
   const cardFilm = new CardView(task);
 
   const replacePopup = () => {
@@ -45,7 +45,7 @@ const renderTask = (taskListElement, task) => {
 
     for (let i = 0; i < task.listGeneres.length; i++) {
 
-      render(filmDetailsGenery, new GenerePopup(task, i).getElement(), RenderPosition.BEFOREEND);
+      render(filmDetailsGenery, new GenerePopupView(task, i).getElement(), RenderPosition.BEFOREEND);
 
     }
     document.body.classList.add('hide-overflow');
@@ -87,16 +87,16 @@ const renderTask = (taskListElement, task) => {
   render(taskListElement, cardFilm.getElement(), RenderPosition.BEFOREEND);
 };
 
-render(siteMainElement, new MenuTemplate().getElement(), RenderPosition.BEFOREEND);
-render(siteMainElement, new SortTemplate().getElement(), RenderPosition.BEFOREEND);
-render(siteMainElement, new FilmsTemplate().getElement(), RenderPosition.BEFOREEND);
-render(headerElement, new UserTemplate().getElement(), RenderPosition.BEFOREEND);
-render(footerStatistics, new NumberMovies().getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, new MenuTemplateView().getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, new SortTemplateView().getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, new FilmsTemplateView().getElement(), RenderPosition.BEFOREEND);
+render(headerElement, new UserTemplateView().getElement(), RenderPosition.BEFOREEND);
+render(footerStatistics, new NumberMoviesView().getElement(), RenderPosition.BEFOREEND);
 
 const mainNavigationItems = document.querySelector('.main-navigation__items');
 const filters = createFilter();
 for (let i = 0; i < filters.length; i++) {
-  render(mainNavigationItems, new FilterNavigation(filters[i]).getElement(),RenderPosition.BEFOREEND);
+  render(mainNavigationItems, new FilterNavigationView(filters[i]).getElement(),RenderPosition.BEFOREEND);
 }
 
 if (tasks.length) {
@@ -121,7 +121,7 @@ if (tasks.length) {
   if (tasks.length > TASK_COUNT_PER_STEP) {
 
     let renderedTaskCount = TASK_COUNT_PER_STEP;
-    render(filmsList, new ButtonTemplate().getElement(), RenderPosition.BEFOREEND);
+    render(filmsList, new ButtonTemplateView().getElement(), RenderPosition.BEFOREEND);
     const loadMoreButton = filmsList.querySelector('.films-list__show-more');
 
     loadMoreButton.addEventListener('click', (evt) => {
@@ -139,6 +139,6 @@ if (tasks.length) {
     });
   }
 } else {
-  render(siteMainElement, new NoFilmsTemplate().getElement(), RenderPosition.AFTERBEGIN);
+  render(siteMainElement, new NoFilmsTemplateView().getElement(), RenderPosition.AFTERBEGIN);
 }
 
