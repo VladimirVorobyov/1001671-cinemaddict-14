@@ -1,4 +1,6 @@
-export const createComment = (comments) => {
+import { createElement } from '../util.js';
+
+const createComment = (comments) => {
   const {date,emotion,author, message } = comments;
   return  `<li class="film-details__comment">
             <span class="film-details__comment-emoji">
@@ -14,3 +16,27 @@ export const createComment = (comments) => {
             </div>
           </li>`;
 };
+
+export default class Comment {
+  constructor(comments){
+    this._comments = comments;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createComment(this._comments);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+
+}

@@ -1,4 +1,6 @@
-export const createCardTemplate = (task) => {
+import { createElement } from '../util.js';
+
+const createCardTemplate = (task) => {
   const {movieTitle, rating, productionYear, time, genre, poster, description, comments} = task;
   return `<article class="film-card">
             <h3 class="film-card__title">${movieTitle}</h3>
@@ -18,3 +20,27 @@ export const createCardTemplate = (task) => {
             </div>
           </article>`;
 };
+
+export default class Card  {
+  constructor(task) {
+    this._task = task;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createCardTemplate(this._task);
+  }
+
+  getElement() {
+
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

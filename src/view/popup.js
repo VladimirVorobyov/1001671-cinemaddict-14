@@ -1,4 +1,6 @@
-export const createPopupTemplate = (task) => {
+import { createElement } from '../util.js';
+
+const createPopupTemplate = (task) => {
   const {movieTitle, rating, releaseDate, time, poster, description, age, director,country, actors, writers, comments} = task;
   return `<section class="film-details">
             <form class="film-details__inner" action="" method="get">
@@ -118,3 +120,27 @@ export const createPopupTemplate = (task) => {
             </form>
           </section>`;
 };
+
+export default class PopupTemplate {
+  constructor(task) {
+    this._task = task;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createPopupTemplate(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+
+}
