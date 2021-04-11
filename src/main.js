@@ -25,18 +25,68 @@ const footerStatistics = document.querySelector('.footer__statistics');
 
 const tasks = new Array(FILMS_NUMBER).fill().map(generateMovie);
 
+const renderTask = (taskListElement, task) => {
+  const PopupComponent = new PopupTemplate(task);
+  const cardFilm = new CardView(task);
+
+  const replacePopup = () => {
+    taskListElement.appendChild(PopupComponent.getElement());
+
+    const commentsForFilm = comments.filter((comment) => {
+      return task.comments.includes(comment.id);
+    });
+
+    const filmDetailsCommentsList = document.querySelector('.film-details__comments-list');
+
+    commentsForFilm.forEach((comment) => {
+      render(filmDetailsCommentsList, new CommentView(comment).getElement(), RenderPosition.BEFOREEND);
+    });
+
+    const filmDetailsGenery = document.querySelector('#genery');
+
+    for (let i = 0; i < task.listGeneres.length; i++) {
+
+      render(filmDetailsGenery, new GenerePopup(task, i).getElement(), RenderPosition.BEFOREEND);
+
+    }
+    document.body.classList.add('hide-overflow');
+  };
+
+  const replaceMain = () => {
+    taskListElement.removeChild(PopupComponent.getElement());
+    document.body.classList.remove('hide-overflow');
+  };
+
+  cardFilm.getElement().querySelector('.film-card__poster').addEventListener('click', () => {
+    replacePopup();
+  });
+
+  cardFilm.getElement().querySelector('.film-card__title').addEventListener('click', () => {
+    replacePopup();
+  });
+
+  cardFilm.getElement().querySelector('.film-card__comments').addEventListener('click', () => {
+    replacePopup();
+  });
+
+  PopupComponent.getElement().querySelector('.film-details__close-btn').addEventListener('click', () => {
+    replaceMain();
+  });
+
+  render(taskListElement, cardFilm.getElement(), RenderPosition.BEFOREEND);
+};
+
 render(siteMainElement, new MenuTemplate().getElement(), RenderPosition.BEFOREEND);
 render(siteMainElement, new SortTemplate().getElement(), RenderPosition.BEFOREEND);
 render(siteMainElement, new FilmsTemplate().getElement(), RenderPosition.BEFOREEND);
 render(headerElement, new UserTemplate().getElement(), RenderPosition.BEFOREEND);
-render(siteMainElement, new PopupTemplate(tasks[0]).getElement(), RenderPosition.BEFOREEND);
 render(footerStatistics, new NumberMovies().getElement(), RenderPosition.BEFOREEND);
 
 const filmsListContainer = document.querySelector('.films-list__container');
 
 for (let i = 0; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
 
-  render(filmsListContainer, new CardView(tasks[i]).getElement(), RenderPosition.BEFOREEND);
+  renderTask(filmsListContainer, tasks[i]);
 
 }
 
@@ -44,32 +94,10 @@ const topRated = document.querySelector('#top-rated');
 const mostCommented = document.querySelector('#most-commented');
 
 for (let i = 0; i < FILMS_TOP; i++) {
-
-  render(topRated, new CardView(tasks[i]).getElement(), RenderPosition.BEFOREEND);
-  render(mostCommented, new CardView(tasks[i]).getElement(), RenderPosition.BEFOREEND);
-
+  renderTask(topRated, tasks[i]);
+  renderTask(mostCommented, tasks[i]);
 }
 
-const commentsForFilm = comments.filter((comment) => {
-  return tasks[0].comments.includes(comment.id);
-});
-
-const filmDetailsCommentsList = document.querySelector('.film-details__comments-list');
-
-commentsForFilm.forEach((comment) => {
-  render(filmDetailsCommentsList, new CommentView(comment).getElement(), RenderPosition.BEFOREEND);
-});
-
-const filmDetailsGenery = document.querySelector('#genery');
-
-for (let i = 0; i < tasks[0].listGeneres.length; i++) {
-
-  render(filmDetailsGenery, new GenerePopup(tasks[0], i).getElement(), RenderPosition.BEFOREEND);
-
-}
-
-
-const filmsDetails = siteMainElement.querySelector('.film-details');
 const filmsList = document.querySelector('.films-list');
 
 if (tasks.length > TASK_COUNT_PER_STEP) {
@@ -82,7 +110,7 @@ if (tasks.length > TASK_COUNT_PER_STEP) {
     evt.preventDefault();
     tasks
       .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-      .forEach((task) => render(filmsListContainer, new CardView(task).getElement(), RenderPosition.BEFOREEND));
+      .forEach((task) => renderTask(filmsListContainer, task));
 
     renderedTaskCount += TASK_COUNT_PER_STEP;
 
@@ -98,9 +126,3 @@ const filters = createFilter();
 for (let i = 0; i < filters.length; i++) {
   render(mainNavigationItems, new FilterNavigation(filters[i]).getElement(),RenderPosition.BEFOREEND);
 }
-
-
-const closeBtn = document.querySelector('.film-details__close-btn');
-closeBtn.addEventListener('click', () => {
-  filmsDetails.style.display = 'none';
-});
