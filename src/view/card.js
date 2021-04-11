@@ -1,15 +1,18 @@
-export const createCardTemplate = () => {
+import { createElement } from '../util.js';
+
+const createCardTemplate = (task) => {
+  const {movieTitle, rating, productionYear, time, genre, poster, description, comments} = task;
   return `<article class="film-card">
-            <h3 class="film-card__title">The Great Flamarion</h3>
-            <p class="film-card__rating">8.9</p>
+            <h3 class="film-card__title">${movieTitle}</h3>
+            <p class="film-card__rating">${rating}</p>
             <p class="film-card__info">
-              <span class="film-card__year">1945</span>
-              <span class="film-card__duration">1h 18m</span>
-              <span class="film-card__genre">Mystery</span>
+              <span class="film-card__year">${productionYear}</span>
+              <span class="film-card__duration">${time}</span>
+              <span class="film-card__genre">${genre}</span>
             </p>
-            <img src="./images/posters/the-great-flamarion.jpg" alt="" class="film-card__poster">
-            <p class="film-card__description">The film opens following a murder at a cabaret in Mexico City in 1936, and then presents the events leading up to it in flashback. The Grea…</p>
-            <a class="film-card__comments">12 comments</a>
+            <img src="${poster}" alt="" class="film-card__poster">
+            <p class="film-card__description">${description}</p>
+            <a class="film-card__comments">${comments.length} comments</a>
             <div class="film-card__controls">
               <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist" type="button">Add to watchlist</button>
               <button class="film-card__controls-item button film-card__controls-item--mark-as-watched" type="button">Mark as watched</button>
@@ -17,3 +20,27 @@ export const createCardTemplate = () => {
             </div>
           </article>`;
 };
+
+export default class Card  {
+  constructor(task) {
+    this._task = task;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createCardTemplate(this._task);
+  }
+
+  getElement() {
+
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
