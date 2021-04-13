@@ -1,4 +1,6 @@
 import {render, RenderPosition} from './util.js';
+import { generateMovie } from './mock/movie.js';
+import { createFilter } from './mock/filter.js';
 import MenuTemplateView  from './view/main-navigation.js';
 import SortTemplateView  from './view/main-sort.js';
 import  UserTemplateView  from './view/user.js';
@@ -7,15 +9,13 @@ import CardView from './view/card.js';
 import ButtonTemplateView  from './view/sow-more.js';
 import PopupTemplateView  from './view/popup.js';
 import NumberMoviesView  from './view/number-fims.js';
-import { generateMovie } from './mock/movie.js';
 import comments from './mock/comment.js';
 import CommentView from './view/comment.js';
 import GenerePopupView from './view/genere.js';
 import FilterNavigationView from './view/filter.js';
 import NoFilmsTemplateView from './view/no-films.js';
-import { createFilter } from './mock/filter.js';
 
-const FILMS_NUMBER = 15;
+const FILMS_NUMBER = 20;
 const FILMS_TOP = 2;
 const TASK_COUNT_PER_STEP = 5;
 const siteMainElement = document.querySelector('.main');
@@ -141,4 +141,3 @@ if (tasks.length) {
 } else {
   render(siteMainElement, new NoFilmsTemplateView().getElement(), RenderPosition.AFTERBEGIN);
 }
-
