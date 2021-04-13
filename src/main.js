@@ -15,7 +15,7 @@ import GenerePopupView from './view/genere.js';
 import FilterNavigationView from './view/filter.js';
 import NoFilmsTemplateView from './view/no-films.js';
 
-const FILMS_NUMBER = 15;
+const FILMS_NUMBER = 20;
 const FILMS_TOP = 2;
 const TASK_COUNT_PER_STEP = 5;
 const siteMainElement = document.querySelector('.main');
@@ -141,4 +141,3 @@ if (tasks.length) {
 } else {
   render(siteMainElement, new NoFilmsTemplateView().getElement(), RenderPosition.AFTERBEGIN);
 }
-
