@@ -1,4 +1,4 @@
-import {getValues, getRandomRating, getRandom, getRandomArray} from '../util.js';
+import {getValues, getRandomRating, getRandom, getRandomArray} from '../utils/util.js';
 import comments from './comment.js';
 
 const NUMBER_OFFERS = 5;

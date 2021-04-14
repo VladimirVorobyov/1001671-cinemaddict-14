@@ -1,4 +1,4 @@
-import {getValues, createData} from '../util.js';
+import {getValues, createData} from '../utils/util.js';
 
 const QUANTITY_GENERATING_COMMENTS = 10;
 

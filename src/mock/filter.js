@@ -1,4 +1,4 @@
-import {getRandom} from '../util.js';
+import {getRandom} from '../utils/util.js';
 export const createFilter = () => {
   return [
     {

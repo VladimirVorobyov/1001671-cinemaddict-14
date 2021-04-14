@@ -1,4 +1,4 @@
-import {render, RenderPosition} from './util.js';
+import {render, RenderPosition, replace, remove} from './utils/render.js';
 import { generateMovie } from './mock/movie.js';
 import { createFilter } from './mock/filter.js';
 import MenuTemplateView  from './view/main-navigation.js';
@@ -29,7 +29,7 @@ const renderTask = (taskListElement, task) => {
   const cardFilm = new CardView(task);
 
   const replacePopup = () => {
-    taskListElement.appendChild(PopupComponent.getElement());
+    replace(PopupComponent, taskListElement);
 
     const commentsForFilm = comments.filter((comment) => {
       return task.comments.includes(comment.id);
@@ -38,21 +38,21 @@ const renderTask = (taskListElement, task) => {
     const filmDetailsCommentsList = document.querySelector('.film-details__comments-list');
 
     commentsForFilm.forEach((comment) => {
-      render(filmDetailsCommentsList, new CommentView(comment).getElement(), RenderPosition.BEFOREEND);
+      render(filmDetailsCommentsList, new CommentView(comment), RenderPosition.BEFOREEND);
     });
 
     const filmDetailsGenery = document.querySelector('#genery');
 
     for (let i = 0; i < task.listGeneres.length; i++) {
 
-      render(filmDetailsGenery, new GenerePopupView(task, i).getElement(), RenderPosition.BEFOREEND);
+      render(filmDetailsGenery, new GenerePopupView(task, i), RenderPosition.BEFOREEND);
 
     }
     document.body.classList.add('hide-overflow');
   };
 
   const replaceMain = () => {
-    taskListElement.removeChild(PopupComponent.getElement());
+    remove(PopupComponent,taskListElement);
     document.body.classList.remove('hide-overflow');
   };
 
@@ -64,39 +64,39 @@ const renderTask = (taskListElement, task) => {
     }
   };
 
-  cardFilm.getElement().querySelector('.film-card__poster').addEventListener('click', () => {
+  cardFilm.setClickCard( () => {
     replacePopup();
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  cardFilm.getElement().querySelector('.film-card__title').addEventListener('click', () => {
+  cardFilm.setClickCard( () => {
     replacePopup();
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  cardFilm.getElement().querySelector('.film-card__comments').addEventListener('click', () => {
+  cardFilm.setClickCard( () => {
     replacePopup();
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  PopupComponent.getElement().querySelector('.film-details__close-btn').addEventListener('click', () => {
+  PopupComponent.setClickPopup( () => {
     replaceMain();
     document.removeEventListener('keydown', onEscKeyDown);
   });
 
-  render(taskListElement, cardFilm.getElement(), RenderPosition.BEFOREEND);
+  render(taskListElement, cardFilm, RenderPosition.BEFOREEND);
 };
 
-render(siteMainElement, new MenuTemplateView().getElement(), RenderPosition.BEFOREEND);
-render(siteMainElement, new SortTemplateView().getElement(), RenderPosition.BEFOREEND);
-render(siteMainElement, new FilmsTemplateView().getElement(), RenderPosition.BEFOREEND);
-render(headerElement, new UserTemplateView().getElement(), RenderPosition.BEFOREEND);
-render(footerStatistics, new NumberMoviesView().getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, new MenuTemplateView(), RenderPosition.BEFOREEND);
+render(siteMainElement, new SortTemplateView(), RenderPosition.BEFOREEND);
+render(siteMainElement, new FilmsTemplateView(), RenderPosition.BEFOREEND);
+render(headerElement, new UserTemplateView(), RenderPosition.BEFOREEND);
+render(footerStatistics, new NumberMoviesView(), RenderPosition.BEFOREEND);
 
 const mainNavigationItems = document.querySelector('.main-navigation__items');
 const filters = createFilter();
 for (let i = 0; i < filters.length; i++) {
-  render(mainNavigationItems, new FilterNavigationView(filters[i]).getElement(),RenderPosition.BEFOREEND);
+  render(mainNavigationItems, new FilterNavigationView(filters[i]),RenderPosition.BEFOREEND);
 }
 
 if (tasks.length) {
@@ -121,11 +121,11 @@ if (tasks.length) {
   if (tasks.length > TASK_COUNT_PER_STEP) {
 
     let renderedTaskCount = TASK_COUNT_PER_STEP;
-    render(filmsList, new ButtonTemplateView().getElement(), RenderPosition.BEFOREEND);
+    const loadMoreButtonComponent = new ButtonTemplateView();
+    render(filmsList, loadMoreButtonComponent, RenderPosition.BEFOREEND);
     const loadMoreButton = filmsList.querySelector('.films-list__show-more');
 
-    loadMoreButton.addEventListener('click', (evt) => {
-      evt.preventDefault();
+    loadMoreButtonComponent.setClickHandler(() => {
       tasks
         .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
         .forEach((task) => renderTask(filmsListContainer, task));
@@ -139,5 +139,5 @@ if (tasks.length) {
     });
   }
 } else {
-  render(siteMainElement, new NoFilmsTemplateView().getElement(), RenderPosition.AFTERBEGIN);
+  render(siteMainElement, new NoFilmsTemplateView(), RenderPosition.AFTERBEGIN);
 }
