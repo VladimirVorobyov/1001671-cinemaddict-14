@@ -11,40 +11,40 @@ export default class  Movie {
     this._popupComponent= null;
     this._cardFilm = null;
     this._commentsComponent = commentsComponent;
+    this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
   init() {
     this._popupComponent = new PopupTemplateView(this._task);
     this._cardFilm = new CardView(this._task);
     render(this._taskListElement, this._cardFilm, RenderPosition.BEFOREEND);
 
-    const onEscKeyDown = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        this._replaceMain();
-        document.removeEventListener('keydown', onEscKeyDown);
-      }
-    };
-
     this._cardFilm.setClickCard( () => {
       this._replacePopup();
-      document.addEventListener('keydown', onEscKeyDown);
+      document.addEventListener('keydown', this._onEscKeyDown);
     });
 
     this._cardFilm.setClickCard( () => {
       this._replacePopup();
-      document.addEventListener('keydown', onEscKeyDown);
+      document.addEventListener('keydown', this._onEscKeyDown);
     });
 
     this._cardFilm.setClickCard( () => {
       this._replacePopup();
-      document.addEventListener('keydown', onEscKeyDown);
+      document.addEventListener('keydown', this._onEscKeyDown);
     });
 
     this._popupComponent.setClickPopup( () => {
       this._replaceMain();
-      document.removeEventListener('keydown', onEscKeyDown);
+      document.removeEventListener('keydown', this._onEscKeyDown);
     });
 
+  }
+  _onEscKeyDown (evt)  {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      this._replaceMain();
+      document.removeEventListener('keydown', this._onEscKeyDown);
+    }
   }
 
   _replaceMain ()  {
