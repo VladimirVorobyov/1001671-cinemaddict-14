@@ -1,5 +1,6 @@
 import {getValues, getRandomRating, getRandom, getRandomArray} from '../utils/util.js';
 import comments from './comment.js';
+import {nanoid} from 'nanoid';
 
 const NUMBER_OFFERS = 5;
 const NUMBER_RATING = 10;
@@ -174,6 +175,10 @@ export const generateMovie = () => {
     writers: createArrayName(),
     actors: createArrayName(),
     comments: getComments(),
+    id: nanoid(),
+    isFavorite: getRandom(0,1),
+    isWatchlist: getRandom(0,1),
+    isHistory: getRandom(0,1),
   };
 
 };

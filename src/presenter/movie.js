@@ -1,44 +1,74 @@
-import {render, RenderPosition, replace, remove} from '../utils/render.js';
+import {render, RenderPosition, replace, remove, subsitute, removeComponent} from '../utils/render.js';
 import CardView from '../view/card.js';
 import PopupTemplateView  from '../view/popup.js';
 import CommentView from '../view/comment.js';
 import GenerePopupView from '../view/genere.js';
 
 export default class  Movie {
-  constructor(commentsComponent, taskListElement, task) {
+  constructor(commentsComponent, taskListElement, task, movieChange) {
     this._taskListElement = taskListElement;
     this._task = task;
     this._popupComponent= null;
     this._cardFilm = null;
     this._commentsComponent = commentsComponent;
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
+    this._movieChange = movieChange;
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    // this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
+    // this._handleHistoryClick = this._handleHistoryClick.bind(this);
   }
+
   init() {
+    const popup = this._popupComponent;
+    const card = this._cardFilm;
+
     this._popupComponent = new PopupTemplateView(this._task);
     this._cardFilm = new CardView(this._task);
-    render(this._taskListElement, this._cardFilm, RenderPosition.BEFOREEND);
 
     this._cardFilm.setClickCard( () => {
-      this._replacePopup();
-      document.addEventListener('keydown', this._onEscKeyDown);
-    });
-
-    this._cardFilm.setClickCard( () => {
-      this._replacePopup();
-      document.addEventListener('keydown', this._onEscKeyDown);
-    });
-
-    this._cardFilm.setClickCard( () => {
-      this._replacePopup();
-      document.addEventListener('keydown', this._onEscKeyDown);
+      this._addCard();
     });
 
     this._popupComponent.setClickPopup( () => {
-      this._replaceMain();
-      document.removeEventListener('keydown', this._onEscKeyDown);
+      this._removeCard();
     });
 
+    this._cardFilm.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._cardFilm.setWatchlistClickHandler(this._handleWatchlistClick);
+    this._cardFilm.setHistoryClickHandler(this._handleHistoryClick);
+
+    this._popupComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._popupComponent.setWatchlistClickHandler(this._handleWatchlistClick);
+    this._popupComponent.setHistoryClickHandler(this._handleHistoryClick);
+
+
+    if(popup === null || card === null){
+      render(this._taskListElement, this._cardFilm, RenderPosition.BEFOREEND);
+      return;
+    }
+
+    if (this._taskListElement.getElement().contains(popup.getElement())) {
+      subsitute(this._popupComponent, popup);
+    }
+    if (this._taskListContainer.getElement().contains(card.getElement())) {
+      subsitute(this._cardFilm, card);
+    }
+
+    removeComponent(popup);
+    removeComponent(card);
+
   }
+
+  _removeCard () {
+    this._replaceMain();
+    document.removeEventListener('keydown', this._onEscKeyDown);
+  }
+
+  _addCard () {
+    this._replacePopup();
+    document.addEventListener('keydown', this._onEscKeyDown);
+  }
+
   _onEscKeyDown (evt)  {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
@@ -73,5 +103,46 @@ export default class  Movie {
 
     }
     document.body.classList.add('hide-overflow');
+  }
+
+  destroy() {
+    removeComponent(this._popupComponent);
+    removeComponent(this._cardFilm);
+  }
+
+  _handleFavoriteClick() {
+    this._movieChange(
+      Object.assign(
+        {},
+        this._task,
+        {
+          isFavorite: !this._task.isFavorite,
+        },
+      ),
+    );
+  }
+
+  _handleWatchlistClick() {
+    this._movieChange(
+      Object.assign(
+        {},
+        this._task,
+        {
+          isWatchlist: !this._task.isWatchlist,
+        },
+      ),
+    );
+  }
+
+  _handleHistoryClick() {
+    this._movieChange(
+      Object.assign(
+        {},
+        this._task,
+        {
+          isHistory: !this._task.isHistory,
+        },
+      ),
+    );
   }
 }
