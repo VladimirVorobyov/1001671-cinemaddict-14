@@ -14,8 +14,8 @@ export default class  Movie {
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._movieChange = movieChange;
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
-    // this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
-    // this._handleHistoryClick = this._handleHistoryClick.bind(this);
+    this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
+    this._handleHistoryClick = this._handleHistoryClick.bind(this);
   }
 
   init() {

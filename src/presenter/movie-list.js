@@ -2,13 +2,22 @@ import {render, RenderPosition, removeComponent} from '../utils/render.js';
 import {updateItem} from '../utils/util.js';
 import ButtonTemplateView  from '../view/sow-more.js';
 import NoFilmsTemplateView from '../view/no-films.js';
+import MenuTemplateView  from '../view/main-navigation.js';
+import SortTemplateView  from '../view/main-sort.js';
+import  UserTemplateView  from '../view/user.js';
+import FilmsTemplateView from '../view/films.js';
+import NumberMoviesView  from '../view/number-fims.js';
+import FilterNavigationView from '../view/filter.js';
 import MoviePresenter from './movie.js';
 const TASK_COUNT_PER_STEP = 5;
 const FILMS_TOP = 2;
 
 export default class  MovieList {
-  constructor(boardContainer, commentsComponent) {
+  constructor(boardContainer, commentsComponent, headerContainer, footerStatContainer, navigationContainer) {
     this._boardContainer = boardContainer;
+    this._navigationContainer = navigationContainer;
+    this._headerContainer = headerContainer;
+    this._footerStatContainer = footerStatContainer;
     this._commentsComponent = commentsComponent;
     this._renderedTaskCount = TASK_COUNT_PER_STEP;
     this._loadMoreButtonComponent = new ButtonTemplateView();
@@ -17,7 +26,22 @@ export default class  MovieList {
     this._handleMovieChange = this._handleMovieChange.bind(this);
   }
 
-  init(boardMovie) {
+  init(boardMovie, arr ) {
+    render(this._boardContainer, new MenuTemplateView(), RenderPosition.BEFOREEND);
+    render(this._boardContainer, new SortTemplateView(), RenderPosition.BEFOREEND);
+    render(this._boardContainer, new FilmsTemplateView(), RenderPosition.BEFOREEND);
+    render(this._headerContainer, new UserTemplateView(), RenderPosition.BEFOREEND);
+    render(this._footerStatContainer, new NumberMoviesView(), RenderPosition.BEFOREEND);
+
+    const mainNavigationItems = document.querySelector('.main-navigation__items');
+    for (let i = 0; i < arr.length; i++) {
+      render( mainNavigationItems, new FilterNavigationView(arr[i]),RenderPosition.BEFOREEND);
+    }
+
+    this._renderBoardMovie(boardMovie);
+  }
+
+  _renderBoardMovie(boardMovie){
     this._boardMovie = boardMovie.slice();
     if (boardMovie.length) {
       const filmsListContainer = document.querySelector('.films-list__container');
